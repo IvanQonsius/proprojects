@@ -1,7 +1,6 @@
 // next-intl.config.js
-console.log('next-intl.config.js loaded');
-
+/** @type {import('next-intl').NextIntlConfig} */
 export default {
   locales: ['en', 'es'],
-  defaultLocale: 'en',
+  defaultLocale: 'en'
 };

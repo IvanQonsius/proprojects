@@ -1,22 +1,14 @@
 // src/app/[locale]/layout.tsx
-import * as NextIntl from 'next-intl';
+import { NextIntlClientProvider } from 'next-intl';
+import type { ReactNode } from 'react';
 
-console.log('NextIntl import:', NextIntl);
-
-export async function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'es' }];
+interface Props {
+  children: ReactNode;
+  params: { locale: string };
 }
 
-export default async function LocaleLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: { locale: string };
-}) {
-  // Await params if necessary (Next.js may provide it sync, but safer to await for latest versions)
+export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = params;
-  console.log('Locale received:', locale);
 
   let messages;
   try {
@@ -25,12 +17,13 @@ export default async function LocaleLayout({
     messages = (await import(`../../../messages/en.json`)).default;
   }
 
-  console.log('Loaded messages:', messages);
-
   return (
-    // DO NOT add <html> or <body> here to avoid nesting errors
-    <NextIntl.NextIntlClientProvider locale={locale} messages={messages}>
-      {children}
-    </NextIntl.NextIntlClientProvider>
+    <html lang={locale}>
+      <body>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          {children}
+        </NextIntlClientProvider>
+      </body>
+    </html>
   );
 }

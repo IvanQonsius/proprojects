@@ -1,8 +1,9 @@
-import type { NextRequest } from 'next/server';
+// src/i18n/request.ts
+import { getRequestConfig } from 'next-intl/server';
 
-export function getLocale(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
-  const segments = pathname.split('/');
-  const locale = segments[1];
-  return ['en', 'es'].includes(locale) ? locale : undefined;
-}
+export default getRequestConfig(async ({ requestLocale }) => {
+  return {
+    locale: requestLocale,
+    messages: (await import(`../../messages/${requestLocale}.json`)).default
+  };
+});
