@@ -1,6 +1,6 @@
 {
     "salutation": "Hola Mundo!",  
     "title": "Bienvenido!",
-    "body": "Si me ves verde, Tailwind funciona!"
+    "welcomeMessage": "¡Bienvenido a {app}!"
   }
   

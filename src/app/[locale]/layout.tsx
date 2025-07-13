@@ -1,12 +1,10 @@
 // src/app/[locale]/layout.tsx
-'use client';
-
-import { NextIntlClientProvider } from 'next-intl';
 import type { ReactNode } from 'react';
+import LocaleProviderClient from './LocaleProviderClient';
 
 interface Props {
   children: ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }
 
 export async function generateStaticParams() {
@@ -14,22 +12,14 @@ export async function generateStaticParams() {
 }
 
 export default async function LocaleLayout({ children, params }: Props) {
-  const { locale } = params;
-  let messages;
-
-  try {
-    messages = (await import(`../../../messages/${locale}.json`)).default;
-  } catch {
-    messages = (await import(`../../../messages/en.json`)).default;
-  }
+  const { locale } = await params;
+  const messages = (
+    await import(`../../../messages/${locale}.json`)
+  ).default;
 
   return (
-    <html lang={locale}>
-      <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <LocaleProviderClient locale={locale} messages={messages}>
+      {children}
+    </LocaleProviderClient>
   );
 }
