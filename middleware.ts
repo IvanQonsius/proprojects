@@ -1,8 +1,3 @@
-Use the built-in middleware factory instead of rolling your own:
-
-ts
-Copy
-Edit
 // middleware.ts
 import createMiddleware from 'next-intl/middleware';
 import intlConfig from './next-intl.config.js';
@@ -13,5 +8,6 @@ export default createMiddleware({
 });
 
 export const config = {
+  // apply to everything except Next's internals and API routes
   matcher: ['/', '/((?!_next/static|_next/image|favicon.ico|api).*)']
 };

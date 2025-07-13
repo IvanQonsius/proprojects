@@ -1,4 +1,6 @@
 // src/app/[locale]/layout.tsx
+'use client';
+
 import { NextIntlClientProvider } from 'next-intl';
 import type { ReactNode } from 'react';
 
@@ -7,10 +9,14 @@ interface Props {
   params: { locale: string };
 }
 
+export async function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'es' }];
+}
+
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = params;
-
   let messages;
+
   try {
     messages = (await import(`../../../messages/${locale}.json`)).default;
   } catch {
